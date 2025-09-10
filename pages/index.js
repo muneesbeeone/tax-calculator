@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Head from "next/head";
+import AdSense from "@/components/AdSense";
 
 export default function Home() {
   return (
@@ -107,6 +108,15 @@ export default function Home() {
           <h2 className="text-lg font-semibold mb-2">Transparent</h2>
           <p className="text-gray-600">See taxable income, standard deduction, and a clear breakdown.</p>
         </div>
+      </div>
+
+      {/* Ad Placement 1 - After Features */}
+      <div className="mt-8 flex justify-center">
+        <AdSense 
+          slot="1234567890" 
+          className="max-w-728px w-full"
+          adType="banner"
+        />
       </div>
 
       <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-8">

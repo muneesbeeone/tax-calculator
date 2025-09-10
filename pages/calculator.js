@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import Head from "next/head";
+import AdSense from "@/components/AdSense";
 
 function calculateNewRegimeTax(taxableIncome) {
   const income = Math.max(0, taxableIncome);
@@ -126,6 +127,15 @@ export default function CalculatorPage() {
         >
           Calculate
         </button>
+      </div>
+
+      {/* Ad Placement - Above Results */}
+      <div className="mt-6 flex justify-center">
+        <AdSense 
+          slot="0987654321" 
+          className="max-w-728px w-full"
+          adType="banner"
+        />
       </div>
 
       <div className="mt-6 p-6 bg-blue-50 border border-blue-200 text-blue-900 rounded-xl">

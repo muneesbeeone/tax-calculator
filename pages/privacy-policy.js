@@ -62,11 +62,18 @@ export default function PrivacyPolicy() {
               <li>Website hosting and content delivery</li>
               <li>Basic analytics (anonymized data only)</li>
               <li>External links to official government resources</li>
+              <li>Google AdSense for advertising (see below)</li>
             </ul>
+            
+            <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">4.1 Google AdSense</h3>
+            <p className="text-gray-700 mb-4">
+              We use Google AdSense to display advertisements. Google AdSense may use cookies and similar technologies to serve ads based on your visits to this site and other sites on the Internet. You may opt out of personalized advertising by visiting 
+              <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline"> Google Ad Settings</a>.
+            </p>
             
             <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4">5. Cookies</h2>
             <p className="text-gray-700 mb-4">
-              We do not use cookies to track your calculator usage or store any personal information. Any cookies used are for basic website functionality only.
+              We do not use cookies to track your calculator usage or store any personal information. However, third-party services like Google AdSense may use cookies for advertising purposes. You can control cookie settings through your browser preferences.
             </p>
             
             <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4">6. Children&apos;s Privacy</h2>
