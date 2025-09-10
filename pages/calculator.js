@@ -44,8 +44,9 @@ export default function CalculatorPage() {
         <meta property="og:title" content="Tax Calculator (FY 2025 New Regime)" />
         <meta property="og:description" content="Slab-wise income tax calculator for India with cess and standard deduction toggles." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://localhost:3000/calculator" />
-        <meta property="og:image" content="/vercel.svg" />
+        <meta property="og:url" content="https://taxcalculator.munees.co.in/calculator" />
+        <meta property="og:image" content="https://taxcalculator.munees.co.in/vercel.svg" />
+        <link rel="canonical" href="https://taxcalculator.munees.co.in/calculator" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -53,7 +54,7 @@ export default function CalculatorPage() {
               '@context': 'https://schema.org',
               '@type': 'WebPage',
               name: 'Indian Income Tax Calculator – New Regime FY 2025',
-              url: 'https://localhost:3000/calculator',
+              url: 'https://taxcalculator.munees.co.in/calculator',
               description: 'Calculate Indian income tax for FY 2025 under the new regime with slab-wise breakdown, standard deduction and cess options.'
             })
           }}

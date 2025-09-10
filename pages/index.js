@@ -11,8 +11,9 @@ export default function Home() {
         <meta property="og:title" content="Tax Mate | Indian Income Tax Calculator (FY 2025 New Regime)" />
         <meta property="og:description" content="Quick Indian income tax estimate with slab breakdown and official links." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://localhost:3000/" />
-        <meta property="og:image" content="/vercel.svg" />
+        <meta property="og:url" content="https://taxcalculator.munees.co.in/" />
+        <meta property="og:image" content="https://taxcalculator.munees.co.in/vercel.svg" />
+        <link rel="canonical" href="https://taxcalculator.munees.co.in/" />
         <meta name="twitter:card" content="summary_large_image" />
         <script
           type="application/ld+json"
@@ -21,12 +22,44 @@ export default function Home() {
               '@context': 'https://schema.org',
               '@type': 'WebSite',
               name: 'Tax Mate | Indian Income Tax Calculator (FY 2025 New Regime) | Quick Estimate',
-              url: 'https://localhost:3000/',
+              url: 'https://taxcalculator.munees.co.in/',
+              description: 'Free Indian income tax calculator for FY 2025 new regime with slab-wise breakdown, standard deduction and cess options.',
+              publisher: {
+                '@type': 'Organization',
+                name: 'Tax Mate',
+                url: 'https://taxcalculator.munees.co.in'
+              },
               potentialAction: {
                 '@type': 'SearchAction',
-                target: 'https://localhost:3000/calculator?q={query}',
+                target: 'https://taxcalculator.munees.co.in/calculator?q={query}',
                 'query-input': 'required name=query'
               }
+            })
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'SoftwareApplication',
+              name: 'Indian Income Tax Calculator',
+              applicationCategory: 'FinanceApplication',
+              operatingSystem: 'Web Browser',
+              description: 'Calculate Indian income tax for FY 2025 under the new regime with instant results and official verification.',
+              url: 'https://taxcalculator.munees.co.in/calculator',
+              offers: {
+                '@type': 'Offer',
+                price: '0',
+                priceCurrency: 'INR'
+              },
+              featureList: [
+                'FY 2025 New Regime Tax Slabs',
+                'Standard Deduction Toggle',
+                '4% Health & Education Cess',
+                'Slab-wise Tax Breakdown',
+                'Official Source Verification'
+              ]
             })
           }}
         />
