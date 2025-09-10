@@ -111,13 +111,13 @@ export default function Home() {
       </div>
 
       {/* Ad Placement 1 - After Features */}
-      <div className="mt-8 flex justify-center">
+      {/* <div className="mt-8 flex justify-center">
         <AdSense 
           slot="1234567890" 
           className="max-w-728px w-full"
           adType="banner"
         />
-      </div>
+      </div> */}
 
       <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="bg-gradient-to-br from-blue-50 to-white border border-blue-200 rounded-xl px-8 py-6">

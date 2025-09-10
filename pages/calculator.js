@@ -130,13 +130,13 @@ export default function CalculatorPage() {
       </div>
 
       {/* Ad Placement - Above Results */}
-      <div className="mt-6 flex justify-center">
+      {/* <div className="mt-6 flex justify-center">
         <AdSense 
           slot="0987654321" 
           className="max-w-728px w-full"
           adType="banner"
         />
-      </div>
+      </div> */}
 
       <div className="mt-6 p-6 bg-blue-50 border border-blue-200 text-blue-900 rounded-xl">
         <h3 className="text-lg font-semibold mb-2">Results</h3>
