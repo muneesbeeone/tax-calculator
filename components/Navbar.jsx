@@ -14,6 +14,9 @@ export default function Navbar() {
           <Link href="/calculator" className="text-slate-700 hover:text-slate-900">
             Calculator
           </Link>
+          <Link href="/learn" className="text-slate-700 hover:text-slate-900">
+            Learn
+          </Link>
         </nav>
       </div>
     </header>

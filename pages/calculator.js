@@ -2,11 +2,20 @@ import { useMemo, useState } from "react";
 import Head from "next/head";
 import AdSense from "@/components/AdSense";
 
-function calculateNewRegimeTax(taxableIncome) {
+function calculateNewRegimeTax(taxableIncome, isResident) {
   const income = Math.max(0, taxableIncome);
-  if (income <= 300000) return 0;
-  if (income <= 700000) return (income - 300000) * 0.05;
-  if (income <= 1000000) return (400000 * 0.05) + (income - 700000) * 0.10;
+
+  // Apply Section 87A rebate (resident individuals only) for new regime
+  if (isResident && income <= 700000) return 0;
+
+  // FY 2025 proposed simplified new regime slabs used in this tool:
+  // 0% up to ₹3,00,000; 5% on ₹3,00,001–₹7,00,000; 10% on ₹7,00,001–₹10,00,000;
+  // 15% above ₹10,00,000.
+  if (income <= 1000000) {
+    // First ₹3L at 0%, next ₹4L at 5%, remainder up to ₹10L at 10%
+    return (400000 * 0.05) + (income - 700000) * 0.10;
+  }
+  // Above ₹10L add 15% for the remaining amount
   return (400000 * 0.05) + (300000 * 0.10) + (income - 1000000) * 0.15;
 }
 
@@ -15,27 +24,121 @@ export default function CalculatorPage() {
   const [deductions, setDeductions] = useState(0);
   const [applyStandardDeduction, setApplyStandardDeduction] = useState(true);
   const [includeCess, setIncludeCess] = useState(true);
+  const [regime, setRegime] = useState("new"); // 'new' | 'old'
+  const [ageCategory, setAgeCategory] = useState("lt60"); // lt60 | s60 | s80
+  const [residency, setResidency] = useState("resident"); // resident | nonresident
+  const [compareRegimes, setCompareRegimes] = useState(false);
 
-  const { grossIncome, otherDeductions, standardDeduction, totalDeductions, taxableIncome, slabTax, cessAmount, totalTax } = useMemo(() => {
-    const gross = Number(totalIncome) || 0;
+  // Special-rate incomes (taxed separately)
+  const [stcg111a, setStcg111a] = useState(0); // 15%
+  const [ltcg112a, setLtcg112a] = useState(0); // 10% over ₹1L
+  const [lotteryIncome, setLotteryIncome] = useState(0); // 30%
+
+  // Shared styles for inputs/selects
+  const inputClass = "w-full rounded-lg border border-gray-300 bg-white/90 px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500 shadow-sm";
+  const selectClass = "w-full rounded-lg border border-gray-300 bg-white/90 px-3 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500 shadow-sm";
+
+  function calculateOldRegimeTax(taxableIncome) {
+    const income = Math.max(0, taxableIncome);
+    // Basic exemption threshold varies by age
+    const basicExemption = ageCategory === "s80" ? 500000 : ageCategory === "s60" ? 300000 : 250000;
+
+    // 87A rebate under old regime applies only to resident individuals
+    if (residency === "resident" && income <= 500000) return 0;
+
+    if (income <= basicExemption) return 0;
+    if (ageCategory === "s80") {
+      // 80+ years: 0% up to 5L, then 20% up to 10L, then 30%
+      if (income <= 1000000) return (income - 500000) * 0.20;
+      return (500000 * 0.20) + (income - 1000000) * 0.30;
+    }
+    // <60 or 60-79
+    if (income <= 500000) return (income - basicExemption) * 0.05;
+    if (income <= 1000000) return (200000 * 0.05) + (income - 500000) * 0.20; // 3L-5L or 2.5L-5L band width is 2L
+    return (200000 * 0.05) + (500000 * 0.20) + (income - 1000000) * 0.30;
+  }
+
+  function computeSurcharge(totalTaxableIncome, baseTax, specialTaxes, regimeParam) {
+    // Simplified surcharge slabs for individuals
+    let rate = 0;
+    if (totalTaxableIncome > 50000000) rate = 0.37;
+    else if (totalTaxableIncome > 20000000) rate = 0.25;
+    else if (totalTaxableIncome > 10000000) rate = 0.15;
+    else if (totalTaxableIncome > 5000000) rate = 0.10;
+
+    // New regime cap: maximum 25%
+    if (regimeParam === "new" && rate > 0.25) rate = 0.25;
+
+    // Cap surcharge on specified capital gains (111A/112A) at 15%
+    const specialCapRate = Math.min(rate, 0.15);
+    const surchargeOnSpecial = (specialTaxes.stcg + specialTaxes.ltcg) * specialCapRate;
+    const surchargeOnBase = baseTax * rate;
+    return Math.round(surchargeOnSpecial + surchargeOnBase);
+  }
+
+  const { grossIncome, otherDeductions, standardDeduction, totalDeductions, taxableIncome, slabTax, surchargeAmount, cessAmount, totalTax, specialBreakup, compare } = useMemo(() => {
+    const baseIncome = Number(totalIncome) || 0;
+    const stcg = Math.max(0, Number(stcg111a) || 0);
+    const ltcg = Math.max(0, Number(ltcg112a) || 0);
+    const lottery = Math.max(0, Number(lotteryIncome) || 0);
+    const gross = baseIncome + stcg + ltcg + lottery;
     const otherDed = Math.min(Number(deductions) || 0, Math.max(0, gross));
     const stdDed = applyStandardDeduction ? 50000 : 0;
-    const cappedStd = Math.min(stdDed, Math.max(0, gross - otherDed));
-    const totalDed = Math.min(otherDed + cappedStd, gross);
-    const taxable = Math.max(0, gross - totalDed);
-    const tax = calculateNewRegimeTax(taxable);
-    const cess = includeCess ? tax * 0.04 : 0;
+    // Deductions and standard deduction are assumed to reduce base income only
+    const maxDeductibleAgainstBase = Math.max(0, baseIncome);
+    const cappedStd = Math.min(stdDed, Math.max(0, maxDeductibleAgainstBase - Math.min(otherDed, maxDeductibleAgainstBase)));
+    const effectiveOtherDed = Math.min(otherDed, maxDeductibleAgainstBase);
+    const baseAfterDeductions = Math.max(0, baseIncome - effectiveOtherDed - cappedStd);
+    const totalDed = effectiveOtherDed + cappedStd;
+
+    // Special-rate taxes (common to both regimes)
+    const stcgTax = Math.round(stcg * 0.15);
+    const ltcgTax = Math.round(Math.max(0, ltcg - 100000) * 0.10);
+    const lotteryTax = Math.round(lottery * 0.30);
+    const specialTaxes = { stcg: stcgTax, ltcg: ltcgTax, lottery: lotteryTax };
+
+    const taxableTotalIncome = baseAfterDeductions + stcg + ltcg + lottery;
+
+    function computeFor(regimeParam) {
+      const baseTaxLocal = regimeParam === "new"
+        ? calculateNewRegimeTax(baseAfterDeductions, residency === "resident")
+        : calculateOldRegimeTax(baseAfterDeductions);
+      const preSurcharge = Math.round(baseTaxLocal + stcgTax + ltcgTax + lotteryTax);
+      const surchargeLocal = computeSurcharge(taxableTotalIncome, baseTaxLocal, specialTaxes, regimeParam);
+      const plusSurcharge = preSurcharge + surchargeLocal;
+      const cessLocal = includeCess ? Math.round(plusSurcharge * 0.04) : 0;
+      return {
+        slabTax: preSurcharge,
+        surchargeAmount: surchargeLocal,
+        cessAmount: cessLocal,
+        totalTax: plusSurcharge + cessLocal,
+      };
+    }
+
+    const resultNew = computeFor("new");
+    const resultOld = computeFor("old");
+
+    const selected = regime === "new" ? resultNew : resultOld;
+
     return {
       grossIncome: gross,
-      otherDeductions: otherDed,
+      otherDeductions: effectiveOtherDed,
       standardDeduction: cappedStd,
-      totalDeductions: totalDed,
-      taxableIncome: taxable,
-      slabTax: Math.round(tax),
-      cessAmount: Math.round(cess),
-      totalTax: Math.round(tax + cess),
+      totalDeductions: Math.min(totalDed, gross),
+      taxableIncome: taxableTotalIncome,
+      slabTax: selected.slabTax,
+      surchargeAmount: selected.surchargeAmount,
+      cessAmount: selected.cessAmount,
+      totalTax: selected.totalTax,
+      specialBreakup: specialTaxes,
+      compare: {
+        new: resultNew,
+        old: resultOld,
+        recommendation: resultNew.totalTax <= resultOld.totalTax ? "new" : "old",
+        difference: Math.abs(resultNew.totalTax - resultOld.totalTax),
+      },
     };
-  }, [totalIncome, deductions, applyStandardDeduction, includeCess]);
+  }, [totalIncome, deductions, applyStandardDeduction, includeCess, regime, stcg111a, ltcg112a, lotteryIncome, ageCategory, residency]);
 
   return (
     <>
@@ -61,12 +164,50 @@ export default function CalculatorPage() {
           }}
         />
       </Head>
-      <section className="max-w-2xl mx-auto relative">
+      <section className="max-w-6xl mx-auto relative">
         <div className="pointer-events-none absolute -top-8 -left-8 h-36 w-36 rounded-full bg-gradient-to-br from-blue-200 to-indigo-200 opacity-30 blur-2xl"></div>
         <div className="pointer-events-none absolute -bottom-8 -right-8 h-40 w-40 rounded-full bg-gradient-to-tr from-emerald-200 to-cyan-200 opacity-30 blur-2xl"></div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
         <h2 className="text-2xl font-semibold mb-2">Tax Calculator</h2>
-        <p className="text-gray-600 mb-6">New Regime slabs for FY 2025</p>
+        <p className="text-gray-600 mb-6">Choose tax regime and enter details</p>
+
+        <div className="mb-4 inline-flex items-center gap-4 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
+          <span className="text-sm text-gray-700">Regime:</span>
+          <label className="inline-flex items-center gap-2">
+            <input type="radio" name="regime" value="new" checked={regime === "new"} onChange={() => setRegime("new")} className="text-blue-600" />
+            <span className="text-sm">New (115BAC 1A)</span>
+          </label>
+          <label className="inline-flex items-center gap-2">
+            <input type="radio" name="regime" value="old" checked={regime === "old"} onChange={() => setRegime("old")} className="text-blue-600" />
+            <span className="text-sm">Old</span>
+          </label>
+          <label className="inline-flex items-center gap-2 ml-auto">
+            <input type="checkbox" checked={compareRegimes} onChange={(e) => setCompareRegimes(e.target.checked)} className="text-blue-600" />
+            <span className="text-sm">Compare New vs Old</span>
+          </label>
+        </div>
+
+        <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <label className="block">
+            <span className="block text-sm font-medium text-gray-700 mb-1">Age Category</span>
+            <select value={ageCategory} onChange={(e) => setAgeCategory(e.target.value)} className={selectClass}>
+              <option value="lt60">Less than 60 years</option>
+              <option value="s60">60 to less than 80 years</option>
+              <option value="s80">80 years and above</option>
+            </select>
+            {regime === "new" && (
+              <p className="mt-1 text-xs text-gray-500">Age affects basic exemption only under the Old regime.</p>
+            )}
+          </label>
+          <label className="block">
+            <span className="block text-sm font-medium text-gray-700 mb-1">Residential Status</span>
+            <select value={residency} onChange={(e) => setResidency(e.target.value)} className={selectClass}>
+              <option value="resident">Resident</option>
+              <option value="nonresident">Non-Resident</option>
+            </select>
+          </label>
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
           <div>
@@ -76,7 +217,7 @@ export default function CalculatorPage() {
             <input
               type="number"
               inputMode="decimal"
-              className="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+              className={inputClass}
               placeholder="e.g. 1200000"
               value={totalIncome}
               onChange={(e) => setTotalIncome(e.target.value)}
@@ -90,12 +231,27 @@ export default function CalculatorPage() {
             <input
               type="number"
               inputMode="decimal"
-              className="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+              className={inputClass}
               placeholder="e.g. 50000"
               value={deductions}
               onChange={(e) => setDeductions(e.target.value)}
               min="0"
             />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">STCG u/s 111A (₹)</label>
+            <input type="number" inputMode="decimal" className={inputClass} value={stcg111a} onChange={(e) => setStcg111a(e.target.value)} min="0" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">LTCG u/s 112A (₹)</label>
+            <input type="number" inputMode="decimal" className={inputClass} value={ltcg112a} onChange={(e) => setLtcg112a(e.target.value)} min="0" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Lottery/Winnings (₹)</label>
+            <input type="number" inputMode="decimal" className={inputClass} value={lotteryIncome} onChange={(e) => setLotteryIncome(e.target.value)} min="0" />
           </div>
         </div>
 
@@ -138,7 +294,7 @@ export default function CalculatorPage() {
         />
       </div> */}
 
-      <div className="mt-6 p-6 bg-blue-50 border border-blue-200 text-blue-900 rounded-xl">
+      <div className="lg:sticky lg:top-6 h-fit mt-0 p-6 bg-blue-50 border border-blue-200 text-blue-900 rounded-xl">
         <h3 className="text-lg font-semibold mb-2">Results</h3>
         <div className="mb-4">
           <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 text-xs font-medium">
@@ -151,12 +307,28 @@ export default function CalculatorPage() {
             <dd className="font-semibold">₹{grossIncome.toLocaleString("en-IN")}</dd>
           </div>
           <div className="flex items-center justify-between bg-white rounded-lg border border-blue-100 p-4">
+            <dt className="text-gray-600">Regime</dt>
+            <dd className="font-semibold">{regime === "new" ? "New" : "Old"}</dd>
+          </div>
+          <div className="flex items-center justify-between bg-white rounded-lg border border-blue-100 p-4">
             <dt className="text-gray-600">Other Deductions</dt>
             <dd className="font-semibold">₹{otherDeductions.toLocaleString("en-IN")}</dd>
           </div>
           <div className="flex items-center justify-between bg-white rounded-lg border border-blue-100 p-4">
             <dt className="text-gray-600">Standard Deduction</dt>
             <dd className="font-semibold">₹{standardDeduction.toLocaleString("en-IN")}</dd>
+          </div>
+          <div className="flex items-center justify-between bg-white rounded-lg border border-blue-100 p-4">
+            <dt className="text-gray-600">STCG 111A Tax</dt>
+            <dd className="font-semibold">₹{specialBreakup.stcg.toLocaleString("en-IN")}</dd>
+          </div>
+          <div className="flex items-center justify-between bg-white rounded-lg border border-blue-100 p-4">
+            <dt className="text-gray-600">LTCG 112A Tax</dt>
+            <dd className="font-semibold">₹{specialBreakup.ltcg.toLocaleString("en-IN")}</dd>
+          </div>
+          <div className="flex items-center justify-between bg-white rounded-lg border border-blue-100 p-4">
+            <dt className="text-gray-600">Lottery/Winnings Tax</dt>
+            <dd className="font-semibold">₹{specialBreakup.lottery.toLocaleString("en-IN")}</dd>
           </div>
           <div className="flex items-center justify-between bg-white rounded-lg border border-blue-100 p-4">
             <dt className="text-gray-600">Total Deductions</dt>
@@ -167,8 +339,12 @@ export default function CalculatorPage() {
             <dd className="font-semibold">₹{taxableIncome.toLocaleString("en-IN")}</dd>
           </div>
           <div className="flex items-center justify-between bg-white rounded-lg border border-blue-100 p-4">
-            <dt className="text-gray-600">Slab Tax</dt>
+            <dt className="text-gray-600">Tax (pre‑surcharge)</dt>
             <dd className="font-semibold">₹{slabTax.toLocaleString("en-IN")}</dd>
+          </div>
+          <div className="flex items-center justify-between bg-white rounded-lg border border-blue-100 p-4">
+            <dt className="text-gray-600">Surcharge</dt>
+            <dd className="font-semibold">₹{surchargeAmount.toLocaleString("en-IN")}</dd>
           </div>
           <div className="flex items-center justify-between bg-white rounded-lg border border-blue-100 p-4">
             <dt className="text-gray-600">4% Cess</dt>
@@ -180,7 +356,8 @@ export default function CalculatorPage() {
           </div>
         </dl>
         <div className="text-xs text-gray-600 mt-4 space-y-2">
-          <p>Note: Estimates based on new regime slabs for FY 2025. Surcharge (if any) not included.</p>
+          <p>Note: Estimates based on the selected regime for FY 2025. Surcharge (if any) not included.</p>
+          <p className="text-gray-700">Special-rate taxes included for STCG 111A (15%), LTCG 112A (10% above ₹1L) and lottery (30%). Surcharge rules simplified with caps per law.</p>
           <p>
             Reference: <a className="underline" target="_blank" rel="noreferrer" href="https://www.incometax.gov.in/iec/foportal/help/individual/return-applicable-1">Income Tax e‑Filing portal (AY 2025‑26 guidance)</a>
           </p>
@@ -188,6 +365,23 @@ export default function CalculatorPage() {
             Cross‑check: <a className="underline" target="_blank" rel="noreferrer" href="https://eportal.incometax.gov.in/iec/foservices/#/TaxCalc/calculator">Official Tax Calculator</a>
           </p>
         </div>
+      </div>
+      {compareRegimes && (
+        <div className="lg:col-span-2 bg-white border border-green-200 rounded-xl p-6 mt-4">
+          <h4 className="text-base font-semibold mb-3">Regime Comparison</h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="border rounded-lg p-4">
+              <div className="flex items-center justify-between mb-2"><span className="text-gray-700">New Regime</span>{compare.recommendation === 'new' && <span className="text-emerald-700 text-xs font-semibold">Recommended</span>}</div>
+              <div className="flex items-center justify-between"><span className="text-gray-600">Total Tax</span><span className="font-semibold">₹{compare.new.totalTax.toLocaleString('en-IN')}</span></div>
+            </div>
+            <div className="border rounded-lg p-4">
+              <div className="flex items-center justify-between mb-2"><span className="text-gray-700">Old Regime</span>{compare.recommendation === 'old' && <span className="text-emerald-700 text-xs font-semibold">Recommended</span>}</div>
+              <div className="flex items-center justify-between"><span className="text-gray-600">Total Tax</span><span className="font-semibold">₹{compare.old.totalTax.toLocaleString('en-IN')}</span></div>
+            </div>
+          </div>
+          <p className="mt-3 text-sm text-gray-700">Difference: ₹{compare.difference.toLocaleString('en-IN')}</p>
+        </div>
+      )}
       </div>
 
       <div className="mt-6">
@@ -198,13 +392,19 @@ export default function CalculatorPage() {
           </summary>
           <div className="px-5 pb-5 text-sm text-gray-700 space-y-3">
             <p>
-              This tool estimates income tax under the new regime for FY 2025 (AY 2026‑27).
+              This tool estimates income tax for FY 2025 (AY 2026‑27) under the selected regime.
               Actual liability may vary based on your specific facts and law changes.
             </p>
             <ul className="list-disc pl-5 space-y-2">
-              <li>
-                Slabs used: 0% up to ₹3,00,000; 5% for ₹3,00,001–₹7,00,000; 10% for ₹7,00,001–₹10,00,000; 15% above ₹10,00,000.
-              </li>
+              {regime === "new" ? (
+                <li>
+                  New regime slabs: 0% up to ₹3,00,000; 5% for ₹3,00,001–₹7,00,000; 10% for ₹7,00,001–₹10,00,000; 15% above ₹10,00,000.
+                </li>
+              ) : (
+                <li>
+                  Old regime slabs: 0% up to ₹2,50,000; 5% for ₹2,50,001–₹5,00,000; 20% for ₹5,00,001–₹10,00,000; 30% above ₹10,00,000.
+                </li>
+              )}
               <li>
                 4% Health & Education Cess can be toggled. Surcharge (if applicable at high incomes) is not included.
               </li>
@@ -215,7 +415,10 @@ export default function CalculatorPage() {
                 Deductions entered are treated as overall reductions against income for estimation. Under the new regime, many traditional deductions/exemptions are not available.
               </li>
               <li>
-                This calculator does not account for rebates, reliefs, MAT/AMT, special income rates, TDS/TCS credits, or set‑offs.
+                Section 87A rebate is applied when eligible: up to ₹7,00,000 (new regime) or up to ₹5,00,000 (old regime). Other reliefs, MAT/AMT, special income rates, TDS/TCS credits, or set‑offs are not covered.
+              </li>
+              <li>
+                Special-rate incomes are taxed separately and added: STCG 111A at 15%, LTCG 112A at 10% after ₹1,00,000 exemption, lottery/winnings at 30%. Surcharge on these is capped at 15%.
               </li>
             </ul>
             <p className="text-gray-600">

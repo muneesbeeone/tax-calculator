@@ -271,6 +271,38 @@ export default function Home() {
           <a className="underline" target="_blank" rel="noreferrer" href="https://www.incometax.gov.in/iec/foportal/help/individual/return-applicable-1">AY 2025‑26 Guidance</a>
         </div>
       </div>
+
+      <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white border border-slate-200 rounded-xl px-8 py-6">
+          <h3 className="text-xl font-semibold mb-3">Why taxes matter (awareness)</h3>
+          <ul className="list-disc pl-5 space-y-2 text-gray-700 text-sm">
+            <li>Funds public goods like infrastructure, education, healthcare, and social security.</li>
+            <li>Helps build creditworthiness and financial history through compliant filings.</li>
+            <li>Enables eligibility for visas, loans, and tenders that require ITR proofs.</li>
+            <li>Reduces penalties and interest by estimating and paying advance/self‑assessment tax on time.</li>
+            <li>Encourages informed planning (investments, insurance) under applicable provisions.</li>
+          </ul>
+        </div>
+        <div className="bg-gradient-to-br from-emerald-50 to-white border border-emerald-200 rounded-xl px-8 py-6">
+          <h3 className="text-xl font-semibold mb-3">Stay compliant (important steps)</h3>
+          <ol className="list-decimal pl-5 space-y-2 text-gray-700 text-sm">
+            <li>Verify PAN and link with Aadhaar if required.</li>
+            <li>Check AIS/TIS and Form 26AS for incomes and TDS credits.</li>
+            <li>Estimate tax and pay advance/self‑assessment tax before due dates.</li>
+            <li>File ITR for the correct AY and e‑verify within the permitted time.</li>
+            <li>Keep proofs of income, deductions, and challans safely.</li>
+          </ol>
+          <div className="mt-3 text-xs text-emerald-900 space-x-2">
+            <a className="underline" target="_blank" rel="noreferrer" href="https://eportal.incometax.gov.in/iec/foservices/#/pre-login/verifyYourPan">Verify PAN</a>
+            <span>•</span>
+            <a className="underline" target="_blank" rel="noreferrer" href="https://www.incometax.gov.in/iec/foportal/help/ais">AIS Help</a>
+            <span>•</span>
+            <a className="underline" target="_blank" rel="noreferrer" href="https://eportal.incometax.gov.in/iec/foservices/#/e-pay-tax-prelogin/user-details">e‑Pay Tax</a>
+            <span>•</span>
+            <a className="underline" target="_blank" rel="noreferrer" href="https://incometaxindia.gov.in/pages/tools/tax-calculator.aspx">CBDT Calculators</a>
+          </div>
+        </div>
+      </div>
     </section>
     </>
   );

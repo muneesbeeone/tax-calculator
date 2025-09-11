@@ -1,6 +1,9 @@
 import "@/styles/globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import dynamic from "next/dynamic";
+
+const Chatbot = dynamic(() => import("@/components/Chatbot"), { ssr: false });
 
 export default function App({ Component, pageProps }) {
   return (
@@ -10,6 +13,7 @@ export default function App({ Component, pageProps }) {
         <Component {...pageProps} />
       </main>
       <Footer />
+      <Chatbot />
     </div>
   );
 }
