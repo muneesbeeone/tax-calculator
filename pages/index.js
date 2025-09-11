@@ -1,8 +1,42 @@
 import Link from "next/link";
 import Head from "next/head";
 import AdSense from "@/components/AdSense";
+import { useState } from "react";
 
-export default function Home() {
+function LatestTaxUpdates({ items }) {
+  if (!items || !items.length) return <p className="text-gray-700">No recent updates available.</p>;
+  return (
+    <ul className="space-y-3">
+      {items.map((it, i) => (
+        <li key={i} className="bg-white border border-slate-200 rounded-lg p-4">
+          <a className="text-blue-700 underline font-medium" href={it.link} target="_blank" rel="noreferrer">{it.title}</a>
+          {it.pubDate && <div className="text-xs text-gray-500 mt-1">{it.pubDate}</div>}
+          {it.description && <p className="text-sm text-gray-700 mt-1 line-clamp-2">{it.description}</p>}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function NewsModal({ items, onClose }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/40" onClick={onClose}></div>
+      <div className="relative z-10 w-11/12 max-w-2xl max-h-[80vh] overflow-auto bg-white border border-slate-200 rounded-xl shadow-xl">
+        <div className="px-5 py-4 border-b border-slate-200 flex sticky top-0 bg-white items-center justify-between">
+          <h3 className="text-lg font-semibold">Latest Tax Updates</h3>
+          <button onClick={onClose} className="text-slate-600 hover:text-slate-900">✕</button>
+        </div>
+        <div className="p-5">
+          <LatestTaxUpdates items={items} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function Home({ rssItems }) {
+  const [newsOpen, setNewsOpen] = useState(false);
   return (
     <>
       <Head>
@@ -121,11 +155,11 @@ export default function Home() {
           }}
         />
       </Head>
-      <section className="max-w-5xl mx-auto py-12 relative">
+      <section className="max-w-5xl mx-auto py-12 relative ">
         <div className="pointer-events-none absolute -top-10 -left-10 h-40 w-40 rounded-full bg-gradient-to-br from-blue-200 to-indigo-200 opacity-30 blur-2xl"></div>
         <div className="pointer-events-none absolute -bottom-10 -right-10 h-48 w-48 rounded-full bg-gradient-to-tr from-emerald-200 to-cyan-200 opacity-30 blur-2xl"></div>
       <div className="text-center mb-10">
-        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 bg-gradient-to-r from-blue-700 to-indigo-600 bg-clip-text text-transparent">
+        <h1 className="text-4xl sm:text-6xl font-bold tracking-tight mb-4 bg-gradient-to-r from-blue-700 to-indigo-600 bg-clip-text text-transparent">
           Simple Indian Tax Calculator (New Regime FY 2025)
         </h1>
         <p className="text-lg text-gray-700">
@@ -218,74 +252,79 @@ export default function Home() {
         Reference: <a className="underline" target="_blank" rel="noreferrer" href="https://www.incometax.gov.in/iec/foportal/help/individual/return-applicable-1">Income Tax e‑Filing portal (AY 2025‑26 guidance)</a>
       </div>
 
-      <div className="mt-12">
-        <h2 className="text-2xl font-semibold mb-4">Taxpayer Resources</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <a
-            href="https://eportal.incometax.gov.in/iec/foservices/#/TaxCalc/calculator"
-            target="_blank"
-            rel="noreferrer"
-            className="block bg-white border border-slate-200 rounded-xl px-6 py-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md"
-          >
-            <div className="text-base font-semibold">Official Tax Calculator</div>
-            <div className="text-gray-600 text-sm">Compare with the government calculator</div>
-          </a>
-          <a
-            href="https://www.incometax.gov.in/iec/foportal/"
-            target="_blank"
-            rel="noreferrer"
-            className="block bg-white border border-slate-200 rounded-xl px-6 py-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md"
-          >
-            <div className="text-base font-semibold">Income Tax Portal</div>
-            <div className="text-gray-600 text-sm">Official e‑Filing portal home</div>
-          </a>
-          <a
-            href="https://eportal.incometax.gov.in/iec/foservices/#/e-pay-tax-prelogin/user-details"
-            target="_blank"
-            rel="noreferrer"
-            className="block bg-white border border-slate-200 rounded-xl px-6 py-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md"
-          >
-            <div className="text-base font-semibold">e‑Pay Tax</div>
-            <div className="text-gray-600 text-sm">Pay taxes online</div>
-          </a>
-          <a
-            href="https://eportal.incometax.gov.in/iec/foservices/#/pre-login/verifyYourPAN"
-            target="_blank"
-            rel="noreferrer"
-            className="block bg-white border border-slate-200 rounded-xl px-6 py-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md"
-          >
-            <div className="text-base font-semibold">Verify PAN Status</div>
-            <div className="text-gray-600 text-sm">Check PAN status</div>
-          </a>
-          <a
-            href="https://www.incometax.gov.in/iec/foportal/"
-            target="_blank"
-            rel="noreferrer"
-            className="block bg-white border border-slate-200 rounded-xl px-6 py-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md"
-          >
-            <div className="text-base font-semibold">Know Refund Status</div>
-            <div className="text-gray-600 text-sm">Track your refund</div>
-          </a>
-          <a
-            href="https://eportal.incometax.gov.in/iec/foservices/#/pre-login/bl-link-aadhaar"
-            target="_blank"
-            rel="noreferrer"
-            className="block bg-white border border-slate-200 rounded-xl px-6 py-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md"
-          >
-            <div className="text-base font-semibold">Link Aadhaar</div>
-            <div className="text-gray-600 text-sm">Link PAN with Aadhaar</div>
-          </a>
-          <a
-            href="https://eportal.incometax.gov.in/iec/foservices/#/pre-login/knowYourTAN"
-            target="_blank"
-            rel="noreferrer"
-            className="block bg-white border border-slate-200 rounded-xl px-6 py-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md"
-          >
-            <div className="text-base font-semibold">Know TAN Details</div>
-            <div className="text-gray-600 text-sm">Find TAN information</div>
-          </a>
-        </div>
-      </div>
+		<div className="mt-12">
+			<div className="flex items-center justify-between mb-4">
+				<h2 className="text-2xl font-semibold">Taxpayer Resources</h2>
+				<button onClick={() => setNewsOpen(true)} className="inline-flex items-center gap-2 px-3 py-2 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50 text-sm">
+					Latest Updates
+				</button>
+			</div>
+			<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+				<a
+					href="https://eportal.incometax.gov.in/iec/foservices/#/TaxCalc/calculator"
+					target="_blank"
+					rel="noreferrer"
+					className="block bg-white border border-slate-200 rounded-xl px-6 py-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md"
+				>
+					<div className="text-base font-semibold">Official Tax Calculator</div>
+					<div className="text-gray-600 text-sm">Compare with the government calculator</div>
+				</a>
+				<a
+					href="https://www.incometax.gov.in/iec/foportal/"
+					target="_blank"
+					rel="noreferrer"
+					className="block bg-white border border-slate-200 rounded-xl px-6 py-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md"
+				>
+					<div className="text-base font-semibold">Income Tax Portal</div>
+					<div className="text-gray-600 text-sm">Official e‑Filing portal home</div>
+				</a>
+				<a
+					href="https://eportal.incometax.gov.in/iec/foservices/#/e-pay-tax-prelogin/user-details"
+					target="_blank"
+					rel="noreferrer"
+					className="block bg-white border border-slate-200 rounded-xl px-6 py-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md"
+				>
+					<div className="text-base font-semibold">e‑Pay Tax</div>
+					<div className="text-gray-600 text-sm">Pay taxes online</div>
+				</a>
+				<a
+					href="https://eportal.incometax.gov.in/iec/foservices/#/pre-login/verifyYourPAN"
+					target="_blank"
+					rel="noreferrer"
+					className="block bg-white border border-slate-200 rounded-xl px-6 py-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md"
+				>
+					<div className="text-base font-semibold">Verify PAN Status</div>
+					<div className="text-gray-600 text-sm">Check PAN status</div>
+				</a>
+				<a
+					href="https://www.incometax.gov.in/iec/foportal/"
+					target="_blank"
+					rel="noreferrer"
+					className="block bg-white border border-slate-200 rounded-xl px-6 py-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md"
+				>
+					<div className="text-base font-semibold">Know Refund Status</div>
+					<div className="text-gray-600 text-sm">Track your refund</div>
+				</a>
+				<a
+					href="https://eportal.incometax.gov.in/iec/foservices/#/pre-login/bl-link-aadhaar"
+					target="_blank"
+					rel="noreferrer"
+					className="block bg-white border border-slate-200 rounded-xl px-6 py-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md"
+				>
+					<div className="text-base font-semibold">Link Aadhaar</div>
+					<div className="text-gray-600 text-sm">Link PAN with Aadhaar</div>
+				</a>
+				<a
+					href="https://eportal.incometax.gov.in/iec/foservices/#/pre-login/knowYourTAN"
+					target="_blank"
+					rel="noreferrer"
+					className="block bg-white border border-slate-200 rounded-xl px-6 py-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md"
+				>
+					<div className="text-base font-semibold">Know TAN Details</div>
+					<div className="text-gray-600 text-sm">Find TAN information</div>
+				</a>
+			</div>
+		</div>
 
       <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-gradient-to-br from-amber-50 to-white border border-amber-200 rounded-xl px-8 py-6">
@@ -334,38 +373,56 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white border border-slate-200 rounded-xl px-8 py-6">
-          <h3 className="text-xl font-semibold mb-3">Why taxes matter (awareness)</h3>
-          <ul className="list-disc pl-5 space-y-2 text-gray-700 text-sm">
-            <li>Funds public goods like infrastructure, education, healthcare, and social security.</li>
-            <li>Helps build creditworthiness and financial history through compliant filings.</li>
-            <li>Enables eligibility for visas, loans, and tenders that require ITR proofs.</li>
-            <li>Reduces penalties and interest by estimating and paying advance/self‑assessment tax on time.</li>
-            <li>Encourages informed planning (investments, insurance) under applicable provisions.</li>
-          </ul>
-        </div>
-        <div className="bg-gradient-to-br from-emerald-50 to-white border border-emerald-200 rounded-xl px-8 py-6">
-          <h3 className="text-xl font-semibold mb-3">Stay compliant (important steps)</h3>
-          <ol className="list-decimal pl-5 space-y-2 text-gray-700 text-sm">
-            <li>Verify PAN and link with Aadhaar if required.</li>
-            <li>Check AIS/TIS and Form 26AS for incomes and TDS credits.</li>
-            <li>Estimate tax and pay advance/self‑assessment tax before due dates.</li>
-            <li>File ITR for the correct AY and e‑verify within the permitted time.</li>
-            <li>Keep proofs of income, deductions, and challans safely.</li>
-          </ol>
-          <div className="mt-3 text-xs text-emerald-900 space-x-2">
-            <a className="underline" target="_blank" rel="noreferrer" href="https://eportal.incometax.gov.in/iec/foservices/#/pre-login/verifyYourPan">Verify PAN</a>
-            <span>•</span>
-            <a className="underline" target="_blank" rel="noreferrer" href="https://www.incometax.gov.in/iec/foportal/help/ais">AIS Help</a>
-            <span>•</span>
-            <a className="underline" target="_blank" rel="noreferrer" href="https://eportal.incometax.gov.in/iec/foservices/#/e-pay-tax-prelogin/user-details">e‑Pay Tax</a>
-            <span>•</span>
-            <a className="underline" target="_blank" rel="noreferrer" href="https://incometaxindia.gov.in/pages/tools/tax-calculator.aspx">CBDT Calculators</a>
-          </div>
-        </div>
-      </div>
-    </section>
+      {newsOpen && <NewsModal items={rssItems} onClose={() => setNewsOpen(false)} />}
+
+      </section>
     </>
   );
+}
+
+export async function getStaticProps() {
+  async function fetchText(url) {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+      const r = await fetch(url, { headers: { 'User-Agent': 'TaxMateBot/1.0' }, signal: controller.signal });
+      clearTimeout(timeout);
+      if (!r.ok) return null;
+      return await r.text();
+    } catch (_) {
+      return null;
+    }
+  }
+  function parseItems(xml) {
+    if (!xml) return [];
+    const items = [];
+    const itemRegex = /<item[\s\S]*?<\/item>/g;
+    const titleRegex = /<title>([\s\S]*?)<\/title>/i;
+    const linkRegex = /<link>([\s\S]*?)<\/link>/i;
+    const dateRegex = /<pubDate>([\s\S]*?)<\/pubDate>/i;
+    const descRegex = /<description>([\s\S]*?)<\/description>/i;
+    const matched = xml.match(itemRegex) || [];
+    for (const chunk of matched) {
+      const title = (chunk.match(titleRegex)?.[1] || '').replace(/<!\[CDATA\[(.*?)\]\]>/g, '$1').trim();
+      const link = (chunk.match(linkRegex)?.[1] || '').replace(/<!\[CDATA\[(.*?)\]\]>/g, '$1').trim();
+      const pubDate = (chunk.match(dateRegex)?.[1] || '').trim();
+      const description = (chunk.match(descRegex)?.[1] || '').replace(/<!\[CDATA\[(.*?)\]\]>/g, '$1').replace(/<[^>]*>/g, '').trim();
+      if (title && link) items.push({ title, link, pubDate, description });
+    }
+    return items;
+  }
+  const sources = [
+    'https://pib.gov.in/PressReleaseRSSFeeds.aspx',
+    'https://taxguru.in/feed'
+  ];
+  const feedTexts = await Promise.all(sources.map(fetchText));
+  let rssItems = feedTexts.flatMap(parseItems).filter(Boolean).slice(0, 20);
+  if (!rssItems.length) {
+    rssItems = [
+      { title: 'PIB – Press Releases (Latest)', link: 'https://pib.gov.in/PressReleasePage.aspx', pubDate: '', description: 'Official Government of India press releases including CBDT/Finance.' },
+      { title: 'CBDT – Press Releases (Dept. of Revenue)', link: 'https://dor.gov.in/cbdt/press-releases', pubDate: '', description: 'Central Board of Direct Taxes announcements and circulars.' },
+      { title: 'Income Tax Dept – Latest Updates', link: 'https://www.incometax.gov.in/iec/foportal/', pubDate: '', description: 'Check banners/alerts on the official e‑Filing portal.' }
+    ];
+  }
+  return { props: { rssItems } };
 }
