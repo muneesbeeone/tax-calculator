@@ -8,12 +8,13 @@ export default function Home() {
       <Head>
         <title>Tax Mate | Indian Income Tax Calculator (FY 2025 New Regime) | Quick Estimate</title>
         <meta name="description" content="Estimate your Indian income tax for FY 2025 under the new regime. See slab-wise breakdown, toggle standard deduction and cess, and access official resources." />
+        <meta name="keywords" content="income tax calculator India, Indian income tax, FY 2025 new regime, tax slabs India, calculate income tax India, old vs new regime, Section 87A rebate, surcharge India, 4% cess, standard deduction India, AY 2026-27" />
         <meta name="robots" content="index,follow" />
         <meta property="og:title" content="Tax Mate | Indian Income Tax Calculator (FY 2025 New Regime)" />
         <meta property="og:description" content="Quick Indian income tax estimate with slab breakdown and official links." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://taxcalculator.munees.co.in/" />
-        <meta property="og:image" content="https://taxcalculator.munees.co.in/vercel.svg" />
+        <meta property="og:image" content="https://taxcalculator.munees.co.in/og_home.png" />
         <link rel="canonical" href="https://taxcalculator.munees.co.in/" />
         <meta name="twitter:card" content="summary_large_image" />
         <script
@@ -32,7 +33,7 @@ export default function Home() {
               },
               potentialAction: {
                 '@type': 'SearchAction',
-                target: 'https://taxcalculator.munees.co.in/calculator?q={query}',
+                target: 'https://taxcalculator.munees.co.in/search?q={query}',
                 'query-input': 'required name=query'
               }
             })
@@ -64,6 +65,61 @@ export default function Home() {
             })
           }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              mainEntity: [
+                {
+                  '@type': 'Question',
+                  name: 'What is the new tax regime?',
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: 'A concessional slab system with limited deductions/exemptions. You can compute tax as per slabs above and compare with the old regime if needed.'
+                  }
+                },
+                {
+                  '@type': 'Question',
+                  name: 'Is 4% cess always applicable?',
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: 'Yes, Health & Education Cess is generally 4% on the tax. This tool lets you include or exclude it for estimates.'
+                  }
+                },
+                {
+                  '@type': 'Question',
+                  name: 'Do all deductions apply in new regime?',
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: 'Many traditional deductions are not available. Standard deduction may apply. Refer to official guidance for eligibility.'
+                  }
+                },
+                {
+                  '@type': 'Question',
+                  name: 'Where can I file my ITR?',
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: 'Use the official e‑Filing portal to file returns and access services.'
+                  }
+                }
+              ]
+            })
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: 'Tax Mate',
+              url: 'https://taxcalculator.munees.co.in',
+              logo: 'https://taxcalculator.munees.co.in/favicon.ico'
+            })
+          }}
+        />
       </Head>
       <section className="max-w-5xl mx-auto py-12 relative">
         <div className="pointer-events-none absolute -top-10 -left-10 h-40 w-40 rounded-full bg-gradient-to-br from-blue-200 to-indigo-200 opacity-30 blur-2xl"></div>
@@ -77,7 +133,7 @@ export default function Home() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 -bottom-5">
         <div className="bg-white rounded-xl border border-slate-200 px-8 py-6 shadow-sm">
           <h2 className="text-lg font-semibold mb-2">Quick & Simple</h2>
           <p className="text-gray-600">Enter total income and deductions. Get slab tax, cess, and totals.</p>

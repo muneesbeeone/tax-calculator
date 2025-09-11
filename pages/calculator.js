@@ -145,11 +145,12 @@ export default function CalculatorPage() {
       <Head>
         <title>Tax Calculator (FY 2025 New Regime) | Indian Income Tax</title>
         <meta name="description" content="Calculate Indian income tax for FY 2025 under the new regime with standard deduction and 4% cess options. See slab-wise breakdown and totals." />
+        <meta name="keywords" content="tax calculator India, Indian income tax calculator, FY 2025 new regime calculator, income tax slabs India, calculate tax India, Section 87A India, surcharge calculator India, cess 4 percent, standard deduction 50000, AY 2026-27 calculator" />
         <meta property="og:title" content="Tax Calculator (FY 2025 New Regime)" />
         <meta property="og:description" content="Slab-wise income tax calculator for India with cess and standard deduction toggles." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://taxcalculator.munees.co.in/calculator" />
-        <meta property="og:image" content="https://taxcalculator.munees.co.in/vercel.svg" />
+        <meta property="og:image" content="https://taxcalculator.munees.co.in/og_home.png" />
         <link rel="canonical" href="https://taxcalculator.munees.co.in/calculator" />
         <script
           type="application/ld+json"

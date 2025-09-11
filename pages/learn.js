@@ -6,6 +6,7 @@ export default function LearnPage() {
       <Head>
         <title>Learn Taxes | Guides, FAQs & Official Links</title>
         <meta name="description" content="Understand Indian income tax basics: regimes, 87A rebate, surcharge, filing steps, and official resources." />
+        <meta name="keywords" content="learn income tax India, Indian tax guides, old vs new regime India, Section 87A India, surcharge rates India, ITR filing steps India, AY 2026-27, FY 2025 taxes" />
         <link rel="canonical" href="https://taxcalculator.munees.co.in/learn" />
       </Head>
       <section className="max-w-5xl mx-auto">

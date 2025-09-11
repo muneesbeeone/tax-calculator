@@ -7,6 +7,7 @@ export default function PrivacyPolicy() {
       <Head>
         <title>Privacy Policy | Tax Mate - Indian Income Tax Calculator</title>
         <meta name="description" content="Privacy policy for Tax Mate - Indian income tax calculator. Learn how we handle your data and protect your privacy." />
+        <meta name="keywords" content="privacy policy India, tax calculator privacy, Indian income tax calculator privacy, data protection India" />
         <meta name="robots" content="index,follow" />
         <meta property="og:title" content="Privacy Policy | Tax Mate" />
         <meta property="og:description" content="Privacy policy for Tax Mate - Indian income tax calculator." />

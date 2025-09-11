@@ -7,6 +7,7 @@ export default function TermsConditions() {
       <Head>
         <title>Terms and Conditions | Tax Mate - Indian Income Tax Calculator</title>
         <meta name="description" content="Terms and conditions for Tax Mate - Indian income tax calculator. Read our terms of service and usage guidelines." />
+        <meta name="keywords" content="terms and conditions India, tax calculator terms, Indian income tax calculator terms, usage policy India" />
         <meta name="robots" content="index,follow" />
         <meta property="og:title" content="Terms and Conditions | Tax Mate" />
         <meta property="og:description" content="Terms and conditions for Tax Mate - Indian income tax calculator." />
