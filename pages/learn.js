@@ -10,7 +10,10 @@ export default function LearnPage() {
         <link rel="canonical" href="https://taxcalculator.munees.co.in/learn" />
       </Head>
       <section className="max-w-5xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Learn Taxes</h1>
+        <h1 className="text-3xl font-bold mb-2">Learn Taxes</h1>
+        <p className="text-gray-700 mb-6">
+          Learn the basics of Indian Income Tax for FY 2025 — new vs old regime, Section 87A rebate, surcharge, cess, and filing steps. When you’re ready, <a href="/calculator" className="underline text-blue-700">use the calculator</a>.
+        </p>
 
         <div className="space-y-8">
           <article className="bg-white border border-slate-200 rounded-xl p-6">

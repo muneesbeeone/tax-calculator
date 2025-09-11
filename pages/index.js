@@ -131,6 +131,12 @@ export default function Home() {
         <p className="text-lg text-gray-700">
           Estimate your income tax instantly using FY 2025 new regime slabs. Toggle standard deduction and cess.
         </p>
+        <p className="mt-4 text-gray-700">
+          Use this free Indian Income Tax Calculator for FY 2025 (New Regime) to get a slab‑wise breakdown, check Section 87A rebate eligibility, include/exclude the ₹50,000 standard deduction and 4% Health & Education Cess, and compare with the old regime.{' '}
+          <Link href="/calculator" className="underline text-blue-700">Calculate now</Link>{' '}or{' '}
+          <Link href="/learn" className="underline text-blue-700">read tax guides</Link>.
+        </p>
+        <p className="mt-2 text-sm text-gray-600">Free, fast, and privacy‑friendly — no data stored.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 -bottom-5">

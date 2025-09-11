@@ -171,7 +171,10 @@ export default function CalculatorPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
         <h2 className="text-2xl font-semibold mb-2">Tax Calculator</h2>
-        <p className="text-gray-600 mb-6">Choose tax regime and enter details</p>
+        <p className="text-gray-600 mb-2">Choose tax regime and enter details</p>
+        <p className="text-gray-700 mb-6">
+          Estimate Indian Income Tax for FY 2025 (New Regime) with slab‑wise breakdown, Section 87A rebate, optional ₹50,000 standard deduction and 4% cess. Compare with the old regime. <a href="/learn" className="underline text-blue-700">Read quick guides</a> or <a href="/" className="underline text-blue-700">go to homepage</a>.
+        </p>
 
         <div className="mb-4 inline-flex items-center gap-4 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
           <span className="text-sm text-gray-700">Regime:</span>
