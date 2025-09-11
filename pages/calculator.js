@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useCallback } from "react";
+import Link from "next/link";
 import Head from "next/head";
 import AdSense from "@/components/AdSense";
 
@@ -38,7 +39,7 @@ export default function CalculatorPage() {
   const inputClass = "w-full rounded-lg border border-gray-300 bg-white/90 px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500 shadow-sm";
   const selectClass = "w-full rounded-lg border border-gray-300 bg-white/90 px-3 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500 shadow-sm";
 
-  function calculateOldRegimeTax(taxableIncome) {
+  const calculateOldRegimeTax = useCallback(function (taxableIncome) {
     const income = Math.max(0, taxableIncome);
     // Basic exemption threshold varies by age
     const basicExemption = ageCategory === "s80" ? 500000 : ageCategory === "s60" ? 300000 : 250000;
@@ -56,7 +57,7 @@ export default function CalculatorPage() {
     if (income <= 500000) return (income - basicExemption) * 0.05;
     if (income <= 1000000) return (200000 * 0.05) + (income - 500000) * 0.20; // 3L-5L or 2.5L-5L band width is 2L
     return (200000 * 0.05) + (500000 * 0.20) + (income - 1000000) * 0.30;
-  }
+  }, [ageCategory, residency]);
 
   function computeSurcharge(totalTaxableIncome, baseTax, specialTaxes, regimeParam) {
     // Simplified surcharge slabs for individuals
@@ -138,7 +139,7 @@ export default function CalculatorPage() {
         difference: Math.abs(resultNew.totalTax - resultOld.totalTax),
       },
     };
-  }, [totalIncome, deductions, applyStandardDeduction, includeCess, regime, stcg111a, ltcg112a, lotteryIncome, ageCategory, residency]);
+  }, [totalIncome, deductions, applyStandardDeduction, includeCess, regime, stcg111a, ltcg112a, lotteryIncome, ageCategory, residency, calculateOldRegimeTax]);
 
   return (
     <>
@@ -173,7 +174,7 @@ export default function CalculatorPage() {
         <h2 className="text-2xl font-semibold mb-2">Tax Calculator</h2>
         <p className="text-gray-600 mb-2">Choose tax regime and enter details</p>
         <p className="text-gray-700 mb-6">
-          Estimate Indian Income Tax for FY 2025 (New Regime) with slab‑wise breakdown, Section 87A rebate, optional ₹50,000 standard deduction and 4% cess. Compare with the old regime. <a href="/learn" className="underline text-blue-700">Read quick guides</a> or <a href="/" className="underline text-blue-700">go to homepage</a>.
+          Estimate Indian Income Tax for FY 2025 (New Regime) with slab‑wise breakdown, Section 87A rebate, optional ₹50,000 standard deduction and 4% cess. Compare with the old regime. <Link href="/learn" className="underline text-blue-700">Read quick guides</Link> or <Link href="/" className="underline text-blue-700">go to homepage</Link>.
         </p>
 
         <div className="mb-4 inline-flex items-center gap-4 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">

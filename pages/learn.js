@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 
 export default function LearnPage() {
   return (
@@ -12,7 +13,7 @@ export default function LearnPage() {
       <section className="max-w-5xl mx-auto">
         <h1 className="text-3xl font-bold mb-2">Learn Taxes</h1>
         <p className="text-gray-700 mb-6">
-          Learn the basics of Indian Income Tax for FY 2025 — new vs old regime, Section 87A rebate, surcharge, cess, and filing steps. When you’re ready, <a href="/calculator" className="underline text-blue-700">use the calculator</a>.
+          Learn the basics of Indian Income Tax for FY 2025 — new vs old regime, Section 87A rebate, surcharge, cess, and filing steps. When you’re ready, <Link href="/calculator" className="underline text-blue-700">use the calculator</Link>.
         </p>
 
         <div className="space-y-8">
