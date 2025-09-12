@@ -177,20 +177,26 @@ export default function CalculatorPage() {
           Estimate Indian Income Tax for FY 2025 (New Regime) with slab‑wise breakdown, Section 87A rebate, optional ₹50,000 standard deduction and 4% cess. Compare with the old regime. <Link href="/learn" className="underline text-blue-700">Read quick guides</Link> or <Link href="/" className="underline text-blue-700">go to homepage</Link>.
         </p>
 
-        <div className="mb-4 inline-flex items-center gap-4 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
-          <span className="text-sm text-gray-700">Regime:</span>
-          <label className="inline-flex items-center gap-2">
-            <input type="radio" name="regime" value="new" checked={regime === "new"} onChange={() => setRegime("new")} className="text-blue-600" />
-            <span className="text-sm">New (115BAC 1A)</span>
-          </label>
-          <label className="inline-flex items-center gap-2">
-            <input type="radio" name="regime" value="old" checked={regime === "old"} onChange={() => setRegime("old")} className="text-blue-600" />
-            <span className="text-sm">Old</span>
-          </label>
-          <label className="inline-flex items-center gap-2 ml-auto">
-            <input type="checkbox" checked={compareRegimes} onChange={(e) => setCompareRegimes(e.target.checked)} className="text-blue-600" />
-            <span className="text-sm">Compare New vs Old</span>
-          </label>
+        <span className="text-sm text-gray-700 sm:mr-4">Regime</span>
+        <div className="mb-4 flex flex-wrap items-center gap-4 bg-gray-50 border mt-1 border-gray-200 rounded-lg px-4 py-3 sm:flex-nowrap sm:justify-center">
+          <div className="flex items-center gap-2 sm:mr-4">
+            <label className="inline-flex items-center gap-2">
+              <input type="radio" name="regime" value="new" checked={regime === "new"} onChange={() => setRegime("new")} className="text-blue-600" />
+              <span className="text-sm">New (115BAC 1A)</span>
+            </label>
+          </div>
+          <div className="flex items-center gap-2 sm:mr-4">
+            <label className="inline-flex items-center gap-2">
+              <input type="radio" name="regime" value="old" checked={regime === "old"} onChange={() => setRegime("old")} className="text-blue-600" />
+              <span className="text-sm">Old</span>
+            </label>
+          </div>
+          <div className="flex items-center gap-2 sm:ml-auto">
+            <label className="inline-flex items-center gap-2">
+              <input type="checkbox" checked={compareRegimes} onChange={(e) => setCompareRegimes(e.target.checked)} className="text-blue-600" />
+              <span className="text-sm">Compare New vs Old</span>
+            </label>
+          </div>
         </div>
 
         <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
