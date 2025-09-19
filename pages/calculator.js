@@ -301,14 +301,7 @@ export default function CalculatorPage() {
             </button>
           </div>
 
-          {/* Ad Placement - Above Results */}
-          {/* <div className="mt-6 flex justify-center">
-        <AdSense 
-          slot="0987654321" 
-          className="max-w-728px w-full"
-          adType="banner"
-        />
-      </div> */}
+
 
           <div className="lg:sticky lg:top-6 h-fit mt-0 p-6 bg-blue-50 border border-blue-200 text-blue-900 rounded-xl">
             <h3 className="text-lg font-semibold mb-2">Results</h3>
@@ -399,7 +392,14 @@ export default function CalculatorPage() {
             </div>
           )}
         </div>
-
+        {/* Ad Placement - Above Results */}
+        <div className="mt-6 flex justify-center">
+          <AdSense
+            slot="9783500294"
+            className="max-w-728px w-full"
+            adType="banner"
+          />
+        </div>
         <div className="mt-6">
           <details className="group bg-white border border-gray-200 rounded-xl shadow-sm">
             <summary className="cursor-pointer list-none select-none px-5 py-4 flex items-center justify-between gap-4">

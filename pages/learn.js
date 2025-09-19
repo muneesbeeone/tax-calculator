@@ -30,7 +30,13 @@ export default function LearnPage() {
               <li>Many deductions not available in new regime; standard deduction may apply.</li>
             </ul>
           </article>
-
+          <div className="mt-6 flex justify-center">
+            <AdSense
+              slot="9783500294"
+              className="max-w-728px w-full"
+              adType="banner"
+            />
+          </div>
           <article className="bg-white border border-slate-200 rounded-xl p-6">
             <h2 className="text-xl font-semibold mb-2">Filing checklist</h2>
             <ol className="list-decimal pl-5 text-gray-700 text-sm space-y-1">
