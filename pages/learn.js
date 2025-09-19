@@ -1,3 +1,4 @@
+import AdSense from "@/components/AdSense";
 import Head from "next/head";
 import Link from "next/link";
 
