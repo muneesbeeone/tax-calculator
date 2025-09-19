@@ -214,7 +214,7 @@ export default function Home({ rssItems }) {
         {/* Ad Placement 1 - After Features */}
         <div className="mt-8 flex justify-center">
         <AdSense 
-          slot="9876543210" 
+          slot="9783500294" 
           className="max-w-[728px] w-full"
           adType="banner"
         />
