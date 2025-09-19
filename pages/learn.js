@@ -9,6 +9,11 @@ export default function LearnPage() {
         <meta name="description" content="Understand Indian income tax basics: regimes, 87A rebate, surcharge, filing steps, and official resources." />
         <meta name="keywords" content="learn income tax India, Indian tax guides, old vs new regime India, Section 87A India, surcharge rates India, ITR filing steps India, AY 2026-27, FY 2025 taxes" />
         <link rel="canonical" href="https://taxcalculator.munees.co.in/learn" />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4391323106927085"
+          crossorigin="anonymous"
+        ></script>
       </Head>
       <section className="max-w-5xl mx-auto">
         <h1 className="text-3xl font-bold mb-2">Learn Taxes</h1>
