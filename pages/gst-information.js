@@ -96,6 +96,22 @@ export default function GstInformationPage() {
                     text: 'GST registration is generally mandatory for businesses with an annual turnover above ₹40 lakh for goods or ₹20 lakh for services, as well as for e-commerce operators, those making inter-state supplies, and other specific categories. Thresholds may vary by state.',
                   },
                 },
+                {
+                  '@type': 'Question',
+                  name: 'What are the different types of GST?',
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: 'GST in India has a dual structure. For intra-state (within the same state) transactions, both Central GST (CGST) and State GST (SGST) are levied. For inter-state (between different states) transactions, Integrated GST (IGST) is levied by the Central Government.',
+                  },
+                },
+                {
+                  '@type': 'Question',
+                  name: 'What are the main GST tax slabs in India?',
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: 'The primary GST slabs are 0% (exempt), 5%, 12%, 18%, and 28%. These rates apply to different categories of goods and services, with essential items typically falling in lower slabs and luxury items in the highest slab.',
+                  },
+                },
               ],
             }),
           }}
@@ -118,6 +134,19 @@ export default function GstInformationPage() {
             <p className="text-gray-700 text-sm space-y-1">
               Goods and Services Tax (GST) is a comprehensive, multi-stage, destination-based indirect tax that has replaced many indirect taxes in India. It is levied on the supply of goods and services. The GST journey of a product or service from the manufacturer to the consumer involves multiple stages, and tax is paid at each stage, with the ability to claim credit for tax paid at the previous stage. This is known as the Input Tax Credit (ITC) mechanism.
             </p>
+          </article>
+
+          <article className="bg-white border border-slate-200 rounded-xl p-6">
+            <h2 className="text-xl font-semibold mb-2">Types of GST</h2>
+            <p className="text-gray-700 text-sm mb-3">
+              India has a dual GST structure, meaning that tax is administered by both the Central and State Governments.
+            </p>
+            <ul className="list-disc pl-5 text-gray-700 text-sm space-y-1">
+              <li><strong>CGST (Central GST):</strong> Levied by the Central Government on the intra-state (within the same state) supply of goods and services.</li>
+              <li><strong>SGST (State GST):</strong> Levied by the State Government on the intra-state supply of goods and services.</li>
+              <li><strong>IGST (Integrated GST):</strong> Levied by the Central Government on all inter-state (between different states) supplies of goods and services. The tax collected is then shared between the Central and State governments.</li>
+              <li><strong>UTGST (Union Territory GST):</strong> Levied on the supply of goods and services in the Union Territories of India.</li>
+            </ul>
           </article>
 
           <div className="mt-6 flex justify-center">
@@ -152,6 +181,50 @@ export default function GstInformationPage() {
           </article>
 
           <article className="bg-white border border-slate-200 rounded-xl p-6">
+            <h2 className="text-xl font-semibold mb-2">GST Slabs and Rates</h2>
+            <p className="text-gray-700 text-sm mb-4">
+              Goods and services are categorized under different tax slabs. While the list is extensive, here are some common examples for each slab. For a complete and updated list, always refer to the official CBIC website.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+              <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                <h3 className="font-semibold text-gray-800 mb-2">0% GST (Exempt)</h3>
+                <ul className="list-disc pl-5 text-gray-700 space-y-1">
+                  <li>Milk, eggs, curd, fresh vegetables</li>
+                  <li>Newspapers, books, educational services</li>
+                </ul>
+              </div>
+              <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                <h3 className="font-semibold text-gray-800 mb-2">5% GST</h3>
+                <ul className="list-disc pl-5 text-gray-700 space-y-1">
+                  <li>Sugar, tea, coffee, edible oils</li>
+                  <li>Apparel & footwear below ₹1000</li>
+                </ul>
+              </div>
+              <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                <h3 className="font-semibold text-gray-800 mb-2">12% GST</h3>
+                <ul className="list-disc pl-5 text-gray-700 space-y-1">
+                  <li>Butter, cheese, ghee, processed foods</li>
+                  <li>Mobile phones</li>
+                </ul>
+              </div>
+              <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                <h3 className="font-semibold text-gray-800 mb-2">18% GST</h3>
+                <ul className="list-disc pl-5 text-gray-700 space-y-1">
+                  <li>Hair oil, toothpaste, soaps</li>
+                  <li>Capital goods, industrial intermediaries</li>
+                </ul>
+              </div>
+              <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                <h3 className="font-semibold text-gray-800 mb-2">28% GST</h3>
+                <ul className="list-disc pl-5 text-gray-700 space-y-1">
+                  <li>Luxury items, cars, cement</li>
+                  <li>Air conditioners, refrigerators</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <article className="bg-white border border-slate-200 rounded-xl p-6">
             <h2 className="text-xl font-semibold mb-2">Who needs to register for GST?</h2>
             <p className="text-gray-700 text-sm mb-3">
               GST registration is mandatory for businesses and individuals whose aggregate turnover exceeds a certain threshold. The threshold varies for goods and services and also depends on the state. Generally, it is required for:
@@ -172,6 +245,7 @@ export default function GstInformationPage() {
             <h2 className="text-xl font-semibold mb-2">Official GST Resources</h2>
             <ul className="list-disc pl-5 text-blue-800 text-sm space-y-1">
               <li><a className="underline" target="_blank" rel="noreferrer" href="https://www.gst.gov.in/">Official GST Portal</a> - For registration, filing, and payments.</li>
+              <li><a className="underline" target="_blank" rel="noreferrer" href="https://cbic-gst.gov.in/gst-goods-services-rates.html">CBIC GST Rates</a> - Official rates for goods and services.</li>
               <li><a className="underline" target="_blank" rel="noreferrer" href="https://cbic-gst.gov.in/">CBIC-GST Portal</a> - For acts, rules, and notifications.</li>
               <li><a className="underline" target="_blank" rel="noreferrer" href="https://www.gst.gov.in/help/faq">GST FAQs</a> - Official frequently asked questions.</li>
             </ul>
