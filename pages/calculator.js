@@ -139,7 +139,7 @@ export default function CalculatorPage() {
         difference: Math.abs(resultNew.totalTax - resultOld.totalTax),
       },
     };
-  }, [totalIncome, deductions, applyStandardDeduction, includeCess, regime, stcg111a, ltcg112a, lotteryIncome, ageCategory, residency, calculateOldRegimeTax]);
+  }, [totalIncome, deductions, applyStandardDeduction, includeCess, regime, stcg111a, ltcg112a, lotteryIncome, residency, calculateOldRegimeTax]);
 
   return (
     <>
@@ -436,6 +436,9 @@ export default function CalculatorPage() {
                 <li>
                   Special-rate incomes are taxed separately and added: STCG 111A at 15%, LTCG 112A at 10% after ₹1,00,000 exemption, lottery/winnings at 30%. Surcharge on these is capped at 15%.
                 </li>
+                <li>
+                  <strong>GST vs. Income Tax:</strong> This calculator is for Income Tax. For information on Goods and Services Tax (GST), an indirect tax, please see our <Link href="/gst-information" className="underline text-blue-700">GST Information page</Link>.
+                </li>
               </ul>
               <p className="text-gray-600">
                 Reference: <a className="underline" target="_blank" rel="noreferrer" href="https://www.incometax.gov.in/iec/foportal/">Income Tax e‑Filing portal</a>
@@ -447,5 +450,3 @@ export default function CalculatorPage() {
     </>
   );
 }
-
-

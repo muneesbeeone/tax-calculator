@@ -137,6 +137,14 @@ export default function Home({ rssItems }) {
                     '@type': 'Answer',
                     text: 'Use the official e‑Filing portal to file returns and access services.'
                   }
+                },
+                {
+                  '@type': 'Question',
+                  name: 'What about GST (Goods and Services Tax)?',
+                  acceptedAnswer: {
+                    '@type': 'Answer',
+                    text: 'This calculator is for Income Tax. GST is an indirect tax on goods and services. You can learn more about GST on our information page.'
+                  }
                 }
               ]
             })
@@ -328,6 +336,13 @@ export default function Home({ rssItems }) {
               <div className="text-base font-semibold">Know TAN Details</div>
               <div className="text-gray-600 text-sm">Find TAN information</div>
             </a>
+            <Link
+              href="/gst-information"
+              className="block bg-white border border-slate-200 rounded-xl px-6 py-5 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-md"
+            >
+              <div className="text-base font-semibold">GST Information</div>
+              <div className="text-gray-600 text-sm">Learn about Goods & Services Tax</div>
+            </Link>
           </div>
         </div>
 
@@ -369,6 +384,10 @@ export default function Home({ rssItems }) {
             <details className="bg-white border border-gray-200 rounded-xl p-5">
               <summary className="font-medium cursor-pointer">Where can I file my ITR?</summary>
               <p className="mt-2 text-sm text-gray-700">Use the official e‑Filing portal to file returns and access services.</p>
+            </details>
+            <details className="bg-white border border-gray-200 rounded-xl p-5">
+              <summary className="font-medium cursor-pointer">What about GST (Goods and Services Tax)?</summary>
+              <p className="mt-2 text-sm text-gray-700">This calculator is for <strong>Income Tax</strong>. GST is an indirect tax on goods and services. You can <Link href="/gst-information" className="underline text-blue-700">learn more about GST</Link> on our information page.</p>
             </details>
           </div>
           <div className="mt-4 text-sm text-gray-600">

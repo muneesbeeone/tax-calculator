@@ -14,7 +14,12 @@ const AdSense = ({
         (window.adsbygoogle = window.adsbygoogle || []).push({});
       }
     } catch (error) {
-      console.error('AdSense error:', error);
+      // In development, React's Strict Mode can cause this effect to run twice,
+      // which might trigger an error from AdSense about the ad slot being
+      // already filled. We can safely ignore this specific error.
+      if (!error.message.includes('already have ads in them')) {
+        console.error('AdSense error:', error);
+      }
     }
   }, []);
 
