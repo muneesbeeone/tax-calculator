@@ -13,7 +13,7 @@ export default function GstInformationPage() {
         />
         <meta
           name="keywords"
-          content="GST India, Goods and Services Tax, GST advantages, GST registration, what is GST, GST benefits, new vehicle gst, business gst"
+          content="income tax calculator, GST India, Goods and Services Tax, GST advantages, GST registration, what is GST, GST benefits, new vehicle gst, business gst"
         />
         <meta name="robots" content="index,follow" />
         <meta property="og:title" content="GST Information | Goods and Services Tax in India" />
@@ -125,7 +125,7 @@ export default function GstInformationPage() {
       <section className="max-w-5xl mx-auto">
         <h1 className="text-3xl font-bold mb-2">About Goods & Services Tax (GST)</h1>
         <p className="text-gray-700 mb-6">
-          This page provides a brief overview of the Goods and Services Tax (GST) in India. Please note that our calculator is for <strong>Income Tax</strong>, not GST. For official details, always refer to the <a href="https://www.gst.gov.in/" target="_blank" rel="noreferrer" className="underline text-blue-700">official GST portal</a>.
+          This page provides a brief overview of the Goods and Services Tax (GST) in India. Please note that our calculator is an <strong>income tax calculator</strong>, not a GST calculator. For official details, always refer to the <a href="https://www.gst.gov.in/" target="_blank" rel="noreferrer" className="underline text-blue-700">official GST portal</a>.
         </p>
 
         <div className="space-y-8">
@@ -255,6 +255,18 @@ export default function GstInformationPage() {
           <Link href="/calculator" className="inline-flex items-center px-5 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium shadow hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
             Go to Income Tax Calculator
           </Link>
+          <p className="mt-2 text-sm text-gray-700">Use our free Indian <strong>income tax calculator</strong> for FY 2025 to estimate your taxes.</p>
+        </div>
+        <div className="mt-6 flex justify-center">
+          <a
+            href="https://buymeacoffee.com/munees"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-medium shadow border border-yellow-300"
+            aria-label="Buy me a coffee"
+          >
+            ☕ Buy me a coffee
+          </a>
         </div>
       </section>
     </>

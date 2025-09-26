@@ -6,8 +6,8 @@ export default function PrivacyPolicy() {
     <>
       <Head>
         <title>Privacy Policy | Tax Mate - Indian Income Tax Calculator</title>
-        <meta name="description" content="Privacy policy for Tax Mate - Indian income tax calculator. Learn how we handle your data and protect your privacy." />
-        <meta name="keywords" content="privacy policy India, tax calculator privacy, Indian income tax calculator privacy, data protection India" />
+        <meta name="description" content="Privacy policy for Tax Mate, the Indian income tax calculator. Learn how we handle your data and protect your privacy while using our income tax calculator." />
+        <meta name="keywords" content="income tax calculator privacy, privacy policy India, tax calculator privacy, Indian income tax calculator privacy, data protection India" />
         <meta name="robots" content="index,follow" />
         <meta property="og:title" content="Privacy Policy | Tax Mate" />
         <meta property="og:description" content="Privacy policy for Tax Mate - Indian income tax calculator." />
@@ -18,13 +18,13 @@ export default function PrivacyPolicy() {
       
       <div className="max-w-4xl mx-auto py-8 px-4">
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">Privacy Policy</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-6">Privacy Policy for the Income Tax Calculator</h1>
           <p className="text-gray-600 mb-6">Last updated: January 10, 2025</p>
           
           <div className="prose prose-gray max-w-none">
             <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4">1. Information We Collect</h2>
             <p className="text-gray-700 mb-4">
-              Tax Mate is designed with privacy in mind. We do not collect, store, or transmit any personal information or financial data you enter into our calculator.
+              Tax Mate is designed with privacy in mind. We do not collect, store, or transmit any personal information or financial data you enter into our <strong>income tax calculator</strong>.
             </p>
             
             <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">1.1 Calculator Data</h3>
@@ -108,6 +108,17 @@ export default function PrivacyPolicy() {
               ← Back to Calculator
             </Link>
           </div>
+        </div>
+        <div className="mt-8 flex justify-center">
+          <a
+            href="https://buymeacoffee.com/munees"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-medium shadow border border-yellow-300"
+            aria-label="Buy me a coffee"
+          >
+            ☕ Buy me a coffee
+          </a>
         </div>
       </div>
     </>

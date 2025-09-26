@@ -6,8 +6,8 @@ export default function TermsConditions() {
     <>
       <Head>
         <title>Terms and Conditions | Tax Mate - Indian Income Tax Calculator</title>
-        <meta name="description" content="Terms and conditions for Tax Mate - Indian income tax calculator. Read our terms of service and usage guidelines." />
-        <meta name="keywords" content="terms and conditions India, tax calculator terms, Indian income tax calculator terms, usage policy India" />
+        <meta name="description" content="Terms and conditions for Tax Mate, the Indian income tax calculator. Read our terms of service and usage guidelines for the income tax calculator." />
+        <meta name="keywords" content="income tax calculator terms, terms and conditions India, tax calculator terms, Indian income tax calculator terms, usage policy India" />
         <meta name="robots" content="index,follow" />
         <meta property="og:title" content="Terms and Conditions | Tax Mate" />
         <meta property="og:description" content="Terms and conditions for Tax Mate - Indian income tax calculator." />
@@ -18,7 +18,7 @@ export default function TermsConditions() {
       
       <div className="max-w-4xl mx-auto py-8 px-4">
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">Terms and Conditions</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-6">Terms and Conditions for the Income Tax Calculator</h1>
           <p className="text-gray-600 mb-6">Last updated: January 10, 2025</p>
           
           <div className="prose prose-gray max-w-none">
@@ -29,7 +29,7 @@ export default function TermsConditions() {
             
             <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4">2. Description of Service</h2>
             <p className="text-gray-700 mb-4">
-              Tax Mate is a free online calculator designed to help users estimate their Indian income tax liability under the new regime for FY 2025. The service provides:
+              Tax Mate is a free online <strong>income tax calculator</strong> designed to help users estimate their Indian income tax liability under the new regime for FY 2025. The service provides:
             </p>
             <ul className="list-disc pl-6 text-gray-700 mb-4">
               <li>Tax calculation based on current FY 2025 new regime slabs</li>
@@ -123,6 +123,17 @@ export default function TermsConditions() {
               ← Back to Calculator
             </Link>
           </div>
+        </div>
+        <div className="mt-8 flex justify-center">
+          <a
+            href="https://buymeacoffee.com/munees"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-medium shadow border border-yellow-300"
+            aria-label="Buy me a coffee"
+          >
+            ☕ Buy me a coffee
+          </a>
         </div>
       </div>
     </>

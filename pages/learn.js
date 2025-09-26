@@ -6,9 +6,9 @@ export default function LearnPage() {
   return (
     <>
       <Head>
-        <title>Learn Taxes | Guides, FAQs & Official Links</title>
-        <meta name="description" content="Understand Indian income tax basics: regimes, 87A rebate, surcharge, filing steps, and official resources." />
-        <meta name="keywords" content="learn income tax India, Indian tax guides, old vs new regime India, Section 87A India, surcharge rates India, ITR filing steps India, AY 2026-27, FY 2025 taxes" />
+        <title>Learn Taxes | Indian Income Tax Calculator Guides, FAQs & Links</title>
+        <meta name="description" content="Guides that complement our Indian income tax calculator: regimes, 87A rebate, surcharge, filing steps, and official resources." />
+        <meta name="keywords" content="income tax calculator, learn income tax India, Indian tax guides, old vs new regime India, Section 87A India, surcharge rates India, ITR filing steps India, AY 2026-27, FY 2025 taxes" />
         <link rel="canonical" href="https://taxcalculator.munees.co.in/learn" />
         <script
           async
@@ -17,9 +17,9 @@ export default function LearnPage() {
         ></script>
       </Head>
       <section className="max-w-5xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2">Learn Taxes</h1>
+        <h1 className="text-3xl font-bold mb-2">Learn Taxes for the Indian Income Tax Calculator</h1>
         <p className="text-gray-700 mb-6">
-          Learn the basics of Indian Income Tax for FY 2025 — new vs old regime, Section 87A rebate, surcharge, cess, and filing steps. When you’re ready, <Link href="/calculator" className="underline text-blue-700">use the calculator</Link>.
+          Learn the basics that power our Indian <strong>income tax calculator</strong> for FY 2025 — new vs old regime, Section 87A rebate, surcharge, cess, and filing steps. When you’re ready, <Link href="/calculator" className="underline text-blue-700">use the income tax calculator</Link>.
         </p>
 
         <div className="space-y-8">
@@ -68,6 +68,17 @@ export default function LearnPage() {
               <li><a className="underline" target="_blank" rel="noreferrer" href="https://eportal.incometax.gov.in/iec/foservices/#/e-pay-tax-prelogin/user-details">e‑Pay Tax</a></li>
             </ul>
           </article>
+        </div>
+        <div className="mt-8 flex justify-center">
+          <a
+            href="https://buymeacoffee.com/munees"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-medium shadow border border-yellow-300"
+            aria-label="Buy me a coffee"
+          >
+            ☕ Buy me a coffee
+          </a>
         </div>
       </section>
     </>

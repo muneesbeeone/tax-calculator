@@ -397,6 +397,18 @@ export default function Home({ rssItems }) {
           </div>
         </div>
 
+        <div className="mt-10 flex justify-center">
+          <a
+            href="https://buymeacoffee.com/munees"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-medium shadow border border-yellow-300"
+            aria-label="Buy me a coffee"
+          >
+            ☕ Buy me a coffee
+          </a>
+        </div>
+
         {newsOpen && <NewsModal items={rssItems} onClose={() => setNewsOpen(false)} />}
 
       </section>

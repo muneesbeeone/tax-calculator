@@ -2,6 +2,62 @@ import { useMemo, useState, useCallback } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import AdSense from "@/components/AdSense";
+import dynamic from "next/dynamic";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip, Legend } from "chart.js";
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
+const BarChart = dynamic(() => import("react-chartjs-2").then(m => m.Bar), { ssr: false });
+
+function TaxBreakdownChart({ slabTax, surchargeAmount, cessAmount, totalTax }) {
+  const labels = ["Tax", "Surcharge", "Cess"];
+  const values = [Math.max(0, slabTax), Math.max(0, surchargeAmount), Math.max(0, cessAmount)];
+  const colors = ["#2563eb", "#7c3aed", "#059669"];
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: "Amount (₹)",
+        data: values,
+        backgroundColor: colors,
+        borderRadius: 8,
+        maxBarThickness: 64,
+      },
+    ],
+  };
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => `₹${(ctx.parsed.y || 0).toLocaleString('en-IN')}`,
+        },
+      },
+      title: { display: false },
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: { color: "#374151", font: { size: 12 } },
+      },
+      y: {
+        grid: { color: "#E5E7EB" },
+        ticks: {
+          color: "#4B5563",
+          font: { size: 11 },
+          callback: (value) => `₹${Number(value).toLocaleString('en-IN')}`,
+        },
+      },
+    },
+  };
+  return (
+    <div className="w-full h-48" role="img" aria-label="Tax breakdown bar chart">
+      <BarChart data={data} options={options} />
+      <p className="mt-2 text-xs text-gray-500 text-right">Total: ₹{totalTax.toLocaleString('en-IN')}</p>
+    </div>
+  );
+}
 
 function calculateNewRegimeTax(taxableIncome, isResident) {
   const income = Math.max(0, taxableIncome);
@@ -299,6 +355,18 @@ export default function CalculatorPage() {
             >
               Calculate
             </button>
+            <div className="mt-3 text-xs text-gray-600 space-y-1">
+              <p className="font-medium text-gray-700">Tips</p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Values update as you type; the Calculate button is optional.</li>
+                <li>Use "Compare New vs Old" to see both regimes side by side.</li>
+                <li>Toggle standard deduction and 4% cess to refine estimates.</li>
+                <li>Residential status affects rebate eligibility; age affects Old regime only.</li>
+                <li>Enter STCG/LTCG/lottery in their fields; they are taxed at special rates.</li>
+                <li>See slab rates below: <a href="#slabs-rates" className="underline text-blue-700">Income Tax Slabs & Rates</a>.</li>
+                <li>This is an estimate; check official calculator before filing.</li>
+              </ul>
+            </div>
           </div>
 
 
@@ -374,6 +442,15 @@ export default function CalculatorPage() {
                 Cross‑check: <a className="underline" target="_blank" rel="noreferrer" href="https://eportal.incometax.gov.in/iec/foservices/#/TaxCalc/calculator">Official Tax Calculator</a>
               </p>
             </div>
+          <div className="bg-white rounded-xl border border-blue-100 p-4 sm:p-5 mt-4">
+            <h4 className="text-sm font-semibold text-gray-800 mb-2">Tax Breakdown</h4>
+            <TaxBreakdownChart
+              slabTax={slabTax}
+              surchargeAmount={surchargeAmount}
+              cessAmount={cessAmount}
+              totalTax={totalTax}
+            />
+          </div>
           </div>
           {compareRegimes && (
             <div className="lg:col-span-2 bg-white border border-green-200 rounded-xl p-6 mt-4">
@@ -391,6 +468,19 @@ export default function CalculatorPage() {
               <p className="mt-3 text-sm text-gray-700">Difference: ₹{compare.difference.toLocaleString('en-IN')}</p>
             </div>
           )}
+        </div>
+        <div className="mt-6">
+          <details className="group bg-white border border-gray-200 rounded-xl shadow-sm">
+            <summary className="cursor-pointer list-none select-none px-5 py-4 flex items-center justify-between gap-4">
+              <span className="text-base font-semibold">FAQs about the Income Tax Calculator</span>
+              <span className="text-gray-500 group-open:rotate-180 transition-transform">▾</span>
+            </summary>
+            <div className="px-5 pb-5 text-sm text-gray-700 space-y-3">
+              <p><strong>What does this income tax calculator do?</strong> It estimates your Indian income tax using the selected regime, showing a clear breakdown of slab tax, surcharge, and cess.</p>
+              <p><strong>Is the income tax calculator accurate?</strong> It is an estimate based on simplified rules for FY 2025. Always verify with the official calculator or consult a professional.</p>
+              <p><strong>Can I compare regimes in the income tax calculator?</strong> Yes. Enable “Compare New vs Old” to view totals side by side.</p>
+            </div>
+          </details>
         </div>
         {/* Ad Placement - Above Results */}
         <div className="mt-6 flex justify-center">
@@ -445,6 +535,62 @@ export default function CalculatorPage() {
               </p>
             </div>
           </details>
+        </div>
+        <div className="mt-6 bg-white border border-gray-200 rounded-xl shadow-sm p-5">
+          <h3 id="slabs-rates" className="text-lg font-semibold mb-3">Income Tax Slabs & Rates</h3>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <h4 className="font-medium text-gray-800 mb-2">New Regime (FY 2025)</h4>
+              <div className="overflow-x-auto">
+                <table className="min-w-full text-sm text-left border border-gray-200 rounded-lg overflow-hidden">
+                  <thead className="bg-gray-50 text-gray-700">
+                    <tr>
+                      <th className="px-3 py-2 border-b">Income Range</th>
+                      <th className="px-3 py-2 border-b">Rate</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y">
+                    <tr><td className="px-3 py-2">Up to ₹3,00,000</td><td className="px-3 py-2 font-medium">0%</td></tr>
+                    <tr><td className="px-3 py-2">₹3,00,001 – ₹7,00,000</td><td className="px-3 py-2 font-medium">5%</td></tr>
+                    <tr><td className="px-3 py-2">₹7,00,001 – ₹10,00,000</td><td className="px-3 py-2 font-medium">10%</td></tr>
+                    <tr><td className="px-3 py-2">Above ₹10,00,000</td><td className="px-3 py-2 font-medium">15%</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p className="mt-2 text-xs text-gray-600">Section 87A rebate for residents up to ₹7,00,000 taxable income. 4% cess applies on tax plus surcharge. Surcharge capped at 25% in New regime.</p>
+            </div>
+            <div>
+              <h4 className="font-medium text-gray-800 mb-2">Old Regime</h4>
+              <div className="overflow-x-auto">
+                <table className="min-w-full text-sm text-left border border-gray-200 rounded-lg overflow-hidden">
+                  <thead className="bg-gray-50 text-gray-700">
+                    <tr>
+                      <th className="px-3 py-2 border-b">Income Range</th>
+                      <th className="px-3 py-2 border-b">Rate</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y">
+                    <tr><td className="px-3 py-2">Up to ₹2,50,000</td><td className="px-3 py-2 font-medium">0%</td></tr>
+                    <tr><td className="px-3 py-2">₹2,50,001 – ₹5,00,000</td><td className="px-3 py-2 font-medium">5%</td></tr>
+                    <tr><td className="px-3 py-2">₹5,00,001 – ₹10,00,000</td><td className="px-3 py-2 font-medium">20%</td></tr>
+                    <tr><td className="px-3 py-2">Above ₹10,00,000</td><td className="px-3 py-2 font-medium">30%</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p className="mt-2 text-xs text-gray-600">Section 87A rebate for residents up to ₹5,00,000 taxable income. 4% cess applies on tax plus surcharge. Surcharge on specified gains (111A/112A) capped at 15%.</p>
+            </div>
+          </div>
+        </div>
+        <div className="mt-8 flex justify-center">
+          <a
+            href="https://buymeacoffee.com/munees"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-medium shadow border border-yellow-300"
+            aria-label="Buy me a coffee"
+          >
+            ☕ Buy me a coffee
+          </a>
         </div>
       </section>
     </>
