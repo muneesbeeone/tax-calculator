@@ -359,7 +359,7 @@ export default function CalculatorPage() {
               <p className="font-medium text-gray-700">Tips</p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Values update as you type; the Calculate button is optional.</li>
-                <li>Use "Compare New vs Old" to see both regimes side by side.</li>
+                <li>Use &quot;Compare New vs Old&quot; to see both regimes side by side.</li>
                 <li>Toggle standard deduction and 4% cess to refine estimates.</li>
                 <li>Residential status affects rebate eligibility; age affects Old regime only.</li>
                 <li>Enter STCG/LTCG/lottery in their fields; they are taxed at special rates.</li>
